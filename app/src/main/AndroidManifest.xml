@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Congeriem">
         <activity
-            android:name=".login_page"
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".ShowItems"
@@ -29,7 +29,7 @@
             android:name=".addCategory"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".login_page"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

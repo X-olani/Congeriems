@@ -23,19 +23,47 @@
             android:layout_height="match_parent"
             android:background="@color/black"
             android:padding="10dp"
-            android:gravity="center"
+
 
 
             >
 
             <TextView
                 android:id="@+id/txtDisplay"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:text="CATS"
                 android:textColor="#ffff"
                 android:textSize="30sp"
                 android:textStyle="bold">
+
+
+            </TextView>         >
+
+            <TextView
+                android:id="@+id/txtCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtDisplay"
+                android:layout_marginTop="40sp"
+                android:text="Caregory:"
+
+                android:textColor="#ffff"
+                android:textSize="18sp"
+                />
+            <TextView
+                android:id="@+id/txtDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtDisplay"
+                android:layout_toRightOf="@+id/txtCategory"
+                android:layout_marginTop="40sp"
+                android:text="Date:"
+                android:layout_marginLeft="150dp"
+                android:textColor="#ffff"
+                android:textSize="18sp"
+                >
 
 
             </TextView>

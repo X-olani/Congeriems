@@ -26,6 +26,10 @@ public class Items {
         return Price;
     }
 
+    public String getDate() {
+        return Date;
+    }
+
     public String getCategoryID() {
         return CategoryID;
     }

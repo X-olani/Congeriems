@@ -51,6 +51,10 @@ public class ItemAdapter extends BaseAdapter {
 
         // then according to the position of the view assign the desired TextView 1 for the same
         TextView displayItem = currentItemView.findViewById(R.id.txtDisplay);
+        TextView displayCateory=currentItemView.findViewById(R.id.txtCategory);
+        TextView displayDate= currentItemView.findViewById(R.id.txtDate);
+        displayCateory.setText("Category:"+item.getCategoryID());
+        displayDate.setText("Date:"+item.getDate());
         displayItem.setText(item.getItems());
 
 

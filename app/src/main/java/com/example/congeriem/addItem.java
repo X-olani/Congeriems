@@ -83,7 +83,7 @@ public class addItem extends AppCompatActivity {
             public void onClick(View view) {
                 String item= edtItem.getText().toString();
                 int price =Integer.parseInt( edtPrice.getText().toString());
-                String date= dataSaved;
+                String date= txtDate.getText().toString();
                 Intent i= new Intent( addItem.this,ShowItems.class);
                 i.putExtra("item",item);
                 i.putExtra("price",price);
