@@ -24,7 +24,7 @@
 
     </Button>
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ListView"
         android:layout_width="413dp"
         android:layout_height="514dp"

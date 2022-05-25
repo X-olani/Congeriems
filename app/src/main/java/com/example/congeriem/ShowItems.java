@@ -1,49 +1,60 @@
 package com.example.congeriem;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
 
 public class ShowItems extends AppCompatActivity {
+    GlobalVariables globalVariables=(GlobalVariables) this.getApplication();
+    List<Items> itemsList;
+
     Button btnBack;
-    ListView lvDisplay;
+    RecyclerView rvDisplay;
     ItemAdapter adapter;
 
 
     ListOfItems listTheItem;
+    private  RecyclerView.LayoutManager layoutManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_items);
-
-        // displaying item on list
-        lvDisplay=findViewById(R.id.ListView2);
-        listTheItem= ((GlobalVariables)this.getApplication()).getListItem();
         btnBack =(Button)findViewById(R.id.btnBack) ;
 
-        adapter=new ItemAdapter(ShowItems.this,listTheItem);
-        lvDisplay.setAdapter(adapter);
+
+        // displaying item on list
+        rvDisplay=findViewById(R.id.ListView2);
+        itemsList= globalVariables.getItemList();
+
+        rvDisplay.setHasFixedSize(true);
+
+
+        layoutManager = new LinearLayoutManager(this);
+        rvDisplay.setLayoutManager(layoutManager);
+
+
+        adapter=new ItemAdapter(itemsList,this);
+        rvDisplay.setAdapter(adapter);
         Bundle newData = getIntent().getExtras();
 
         if(newData!= null){
 
             String getCategory= newData.getString("category");
-            String getItem= newData.getString("item");
-            int price= newData.getInt("price");
-            String date= newData.getString("date");
+            int id= newData.getInt("id");
+           theFilter(getCategory);
 
-
-            //if editposition is not -1 update list  and remove old item
-            Items item= new Items(getItem,price,getCategory,date);
-            listTheItem.getMyItemList().add(item);
-
-            adapter.notifyDataSetChanged();
         }
 
         //button to back to the main page
@@ -53,6 +64,22 @@ public class ShowItems extends AppCompatActivity {
                 Intent i= new Intent(getApplicationContext(),ShowCategories.class);
                 startActivity(i);
             }
+
         });
+
     }
+    public void theFilter (String filterBy){
+
+        List<Items> filterList = new ArrayList<Items>();
+
+        for (Items sub: itemsList){
+            if(sub.getCategoryID().toLowerCase().contains(filterBy)){
+
+                filterList.add(sub);
+            }
+
+        }
+        adapter=new ItemAdapter(filterList,this);
+        rvDisplay.setAdapter(adapter);
+    };
 }

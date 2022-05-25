@@ -2,62 +2,91 @@ package com.example.congeriem;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.RecyclerView;
 
-public class CategoryAdapter extends BaseAdapter {
-    Activity mActivity;
-    ListCategory myList;
+import java.util.List;
 
-    public CategoryAdapter(Activity mActivity, ListCategory myList) {
-        this.mActivity = mActivity;
-        this.myList = myList;
-    }
+public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyViewHolder> {
+  List<Categories> categoriesList;
+  Context context;
 
-    @Override
-    public int getCount() {
-        return myList.getMycategoriesList().size();
-    }
-
-    @Override
-    public Categories getItem(int i) {
-        return myList.getMycategoriesList().get(i);
-    }
-
-    @Override
-    public long getItemId(int i) {
-        return 0;
+    public CategoryAdapter(List<Categories> categoriesList, Context context) {
+        this.categoriesList = categoriesList;
+        this.context = context;
     }
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+View view =LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_layout,parent,false);
+MyViewHolder holder= new MyViewHolder(view);
+        return holder;
+    }
 
-        // convertView which is recyclable view
-        View currentItemView ;
-
-        LayoutInflater inflater= (LayoutInflater)mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        currentItemView= inflater.inflate(R.layout.custom_layout,parent,false);
-
-        // get the position of the view from the ArrayAdapter
-        Categories category = this.getItem(position);
-
-
-        // then according to the position of the view assign the desired TextView 1 for the same
-        TextView displayCat = currentItemView.findViewById(R.id.txtDisplay);
-        displayCat.setText(category.getCategory());
+    // binding the data to the view
+    @Override
+    public void onBindViewHolder(@NonNull MyViewHolder holder, final int position ) {
 
 
+holder.txtDisplay.setText(categoriesList.get(position).getCategory());
 
-        // then return the recyclable view
-        return currentItemView;
+holder.parentLayout.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+        Intent i = new Intent(context,ShowItems.class);
+        i.putExtra("category",categoriesList.get(position).getCategory());
+
+        context.startActivity(i);
+    }
+});
+
+// holding the card will allow you to edit the category
+
+ holder.parentLayout.setOnLongClickListener(new View.OnLongClickListener() {
+     @Override
+     public boolean onLongClick(View view) {
+         Intent i= new Intent(context,EditCategory.class);
+
+
+         i.putExtra("category",categoriesList.get(position).getCategory());
+         i.putExtra("goal",categoriesList.get(position).getGoal());
+         i.putExtra("id",categoriesList.get(position).getID());
+
+         context.startActivity(i);
+         return false;
+     }
+ });
+    }
+
+    @Override
+    public int getItemCount() {
+        return categoriesList.size();
     }
 
 
+    public  class MyViewHolder extends  RecyclerView.ViewHolder{
+        // input object assignment area
+
+        TextView txtDisplay;
+ConstraintLayout parentLayout;
+        public  MyViewHolder(@NonNull View itemView){
+            super(itemView);
+            txtDisplay= itemView.findViewById(R.id.txtDisplay);
+parentLayout= itemView.findViewById(R.id.linearLayoutCategory);
+        }
+
+
+
+    }
 }

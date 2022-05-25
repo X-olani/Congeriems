@@ -11,17 +11,26 @@ import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class addItem extends AppCompatActivity {
+    GlobalVariables globalVariables=(GlobalVariables) this.getApplication();
+    List<Items> itemsList;
+    List <Categories> categoriesList;
+    Spinner spinner;
+
     TextView edtItem,edtPrice, txtDate, txtMessage;
     Button btnCancel,btnDone;
     String dataSaved, selectedCategory;
+    int categoryID;
     int limitItem;
     private DatePickerDialog.OnDateSetListener onDateSetListener;
 
@@ -38,14 +47,18 @@ public class addItem extends AppCompatActivity {
         btnDone=(Button) findViewById(R.id.btnDone);
         btnCancel =(Button) findViewById(R.id.btnCancel);
         txtMessage=(TextView )findViewById(R.id.txtLabel4);
+        itemsList= globalVariables.getItemList();
+        categoriesList=globalVariables.getCategoryList();
+        spinner=findViewById(R.id.spinner);
 
-        Bundle newData= getIntent().getExtras();
-        if(newData!=null){
 
-            selectedCategory=newData.getString("category");
-            limitItem=newData.getInt("goal");
-            checkIfGoalIsComplete(limitItem);
-        }
+// dropdown of category
+        ArrayAdapter<Categories> spinnerAdapter = new ArrayAdapter<Categories>(this, android.R.layout.simple_spinner_item,categoriesList);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(spinnerAdapter);
+
+
+
         //getting a the date view
 
         txtDate.setOnClickListener(new View.OnClickListener() {
@@ -81,16 +94,22 @@ public class addItem extends AppCompatActivity {
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                //assigning the variables
+
                 String item= edtItem.getText().toString();
                 int price =Integer.parseInt( edtPrice.getText().toString());
                 String date= txtDate.getText().toString();
-                Intent i= new Intent( addItem.this,ShowItems.class);
-                i.putExtra("item",item);
-                i.putExtra("price",price);
-                i.putExtra("date",date);
-                i.putExtra("category",selectedCategory);
-                if(checkIfGoalIsComplete(limitItem)){
+                selectedCategory=spinner.getSelectedItem().toString();
 
+                Intent i= new Intent( addItem.this,ShowItems.class);
+                i.putExtra("category",selectedCategory);
+
+                Items c= new Items(generateID(itemsList),item,price,selectedCategory,date);
+
+/// if goal not reached add item
+                if(checkIfGoalIsComplete( itemsList)){
+                    itemsList.add(c);
                     startActivity(i);
                 }
 
@@ -110,20 +129,30 @@ public class addItem extends AppCompatActivity {
 
     }
     //check if the goal has been reached if so the user can not add to list
-    public Boolean checkIfGoalIsComplete(int goal){
+    public Boolean checkIfGoalIsComplete(List<Items> arrayItem){
         boolean saveItem=true;
-        ListOfItems listItems= ((GlobalVariables)this.getApplication()).getListItem();
-        ArrayList<Items> ArrayItems= (ArrayList<Items>) listItems.getMyItemList();
+        limitItem=0;
         int count=0;
-        for(Items i:ArrayItems){
+
+
+        // get the goal form th category class
+        for(Categories i:categoriesList){
+
+            if(i.getCategory().contentEquals(selectedCategory)){
+            limitItem=i.getGoal();
+
+            };
+        }
+
+      // checking igf the goal haven reached
+        for(Items i:arrayItem){
 
             if(i.getCategoryID().contentEquals(selectedCategory)){
                 count++;
 
             };
         }
-        Toast.makeText(addItem.this,Integer.toString( goal ),Toast.LENGTH_LONG).show();
-        if (goal == count){
+        if (limitItem == count){
             saveItem =false;
             txtMessage.setText("Goal has been Reached");
 
@@ -132,4 +161,28 @@ public class addItem extends AppCompatActivity {
 
 
     };
+
+    // generating an id for the item
+    public int generateID (List< Items > arraylist) {
+        int max = 0;
+        int createId = 0;
+        //if the array list is empty make the id 1
+        if (arraylist.size() == 0) {
+
+
+            createId = 0;
+        } else {
+            for (int x = 0; x < arraylist.size(); x++) {
+
+                if (arraylist.get(x).getID() > arraylist.get(max).getID()) {
+                    max = x;
+                }
+
+
+            }
+            createId = arraylist.get(max).getID();
+            createId = createId + 1;
+        }
+        return createId;
+    }
 }

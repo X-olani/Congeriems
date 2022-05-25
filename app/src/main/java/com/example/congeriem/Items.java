@@ -2,21 +2,26 @@ package com.example.congeriem;
 
 public class Items {
 
+    private int ID;
     private String Items;
     private int Price;
     private String CategoryID;
     private String  Date;
 
-    public Items( String items, int price,String categoryID, String date) {
+    public Items(int id,String items, int price,String categoryID, String date) {
 
         Items = items;
         Price= price;
         CategoryID = categoryID;
         Date=date;
+        ID=id;
 
     }
 
 
+    public int getID() {
+        return ID;
+    }
 
     public String getItems() {
         return Items;
@@ -32,5 +37,11 @@ public class Items {
 
     public String getCategoryID() {
         return CategoryID;
+    }
+
+    @Override
+    public String toString() {
+        return  Items ;
+
     }
 }

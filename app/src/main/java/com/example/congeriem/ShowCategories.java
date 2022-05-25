@@ -2,6 +2,8 @@ package com.example.congeriem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,39 +12,41 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
+import java.util.List;
+
 public class ShowCategories extends AppCompatActivity {
+    GlobalVariables globalVariables=(GlobalVariables) this.getApplication();
+    List<Categories> arrayCategory;
+    CategoryAdapter adapter;
     CardView createCategory;
     Button nextWindow;
-    ListView lvDisplay;
-    CategoryAdapter adapter;
-    ListCategory listTheCategory;
+    RecyclerView rvDisplay;
+
+
+
+    private  RecyclerView.LayoutManager layoutManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_categories);
 
-        lvDisplay=findViewById(R.id.ListView);
-        listTheCategory= ((GlobalVariables)this.getApplication()).getListCat();
-        adapter=new CategoryAdapter(ShowCategories.this,listTheCategory);
-        lvDisplay.setAdapter(adapter);
-        Bundle newData = getIntent().getExtras();
+        // createing a connection to the recycle view and displaying data
+        arrayCategory = globalVariables.getCategoryList();
 
-        if(newData!= null){
+        rvDisplay = findViewById(R.id.ListView);
+
+        rvDisplay.setHasFixedSize(true);
 
 
-            String getCategory= newData.getString("Category");
-            int getGoal= newData.getInt("GOAL");
-            int editPosition= newData.getInt("edit");
-            Categories c= new Categories(getCategory,getGoal);
+        layoutManager = new LinearLayoutManager(this);
+        rvDisplay.setLayoutManager(layoutManager);
 
-            //if editposition is not -1 update list  and remove old item
-            if(editPosition>-1){
-                listTheCategory.getMycategoriesList().remove(editPosition);
-            }
-            listTheCategory.getMycategoriesList().add(c);
-            adapter.notifyDataSetChanged();
-        }
-        nextWindow= (Button) findViewById(R.id.btnNext);
+        adapter = new CategoryAdapter(arrayCategory, this);
+        rvDisplay.setAdapter(adapter);
+
+
+        nextWindow = (Button) findViewById(R.id.btnNext);
 
         nextWindow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,40 +56,11 @@ public class ShowCategories extends AppCompatActivity {
             }
         });
 
-        // holding in the category will open edit view
-        lvDisplay.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
-
-                Intent i= new Intent(getApplicationContext(),EditCategory.class);
-                Categories c=  listTheCategory.getMycategoriesList().get(position);
-
-                i.putExtra("category",c.getCategory());
-                i.putExtra("goal",c.getGoal());
-                i.putExtra("edit",position);
-                startActivity(i);
-                return false;
-            }
-
-
-        });
-        lvDisplay.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Intent i= new Intent(getApplicationContext(),addItem.class);
-                Categories c=  listTheCategory.getMycategoriesList().get(position);
-                i.putExtra("category",c.getCategory());
-                i.putExtra("goal",c.getGoal());
-
-                startActivity(i);
-            }
-        });
-
-
-
-
 
 
 
     }
+
+
+
 }

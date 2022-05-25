@@ -6,62 +6,71 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.RecyclerView;
 
-public class ItemAdapter extends BaseAdapter {
+import java.util.List;
 
-    Activity mActivity;
-    ListOfItems myList;
+public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.MyViewHolder> {
 
-    public ItemAdapter(Activity mActivity, ListOfItems myList) {
-        this.mActivity = mActivity;
-        this.myList = myList;
+ List<Items> itemsList;
+ Context context;
+
+    public ItemAdapter(List<Items> itemsList, Context context) {
+        this.itemsList = itemsList;
+        this.context = context;
+    }
+
+    @NonNull
+    @Override
+    public ItemAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_custom_layout,parent, false);
+        MyViewHolder holder= new MyViewHolder(view);
+
+
+        return holder;
     }
 
     @Override
-    public int getCount() {
-        return myList.getMyItemList().size();
+    public void onBindViewHolder(@NonNull ItemAdapter.MyViewHolder holder, final int position) {
+
+        holder.displayCateory.setText("Category:"+itemsList.get(position).getCategoryID());
+        holder.displayDate.setText("Date:"+itemsList.get(position).getDate());
+        holder.displayItem.setText(itemsList.get(position).getItems());
+
+        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
     }
 
     @Override
-    public Items getItem(int i) {
-        return myList.getMyItemList().get(i);
+    public int getItemCount() {
+        return itemsList.size();
     }
+    public  class  MyViewHolder extends  RecyclerView.ViewHolder{
 
-    @Override
-    public long getItemId(int i) {
-        return 0;
+        TextView displayItem;
+        TextView displayCateory;
+        TextView displayDate;
+        ConstraintLayout parentLayout;
+
+    public MyViewHolder(@NonNull View itemView){
+
+        super(itemView);
+         displayItem = itemView.findViewById(R.id.txtDisplay);
+         displayCateory=itemView.findViewById(R.id.txtCategory);
+         displayDate= itemView.findViewById(R.id.txtDate);
+         parentLayout= itemView.findViewById(R.id.linearLayoutItems);
+
     }
-
-    @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
-
-        View currentItemView ;
-
-        LayoutInflater inflater= (LayoutInflater)mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        currentItemView= inflater.inflate(R.layout.item_custom_layout,parent,false);
-
-        // get the position of the view from the ArrayAdapter
-        Items item = this.getItem(position);
-
-
-        // then according to the position of the view assign the desired TextView 1 for the same
-        TextView displayItem = currentItemView.findViewById(R.id.txtDisplay);
-        TextView displayCateory=currentItemView.findViewById(R.id.txtCategory);
-        TextView displayDate= currentItemView.findViewById(R.id.txtDate);
-        displayCateory.setText("Category:"+item.getCategoryID());
-        displayDate.setText("Date:"+item.getDate());
-        displayItem.setText(item.getItems());
-
-
-
-        // then return the recyclable view
-        return currentItemView;
-
-
     }
 }

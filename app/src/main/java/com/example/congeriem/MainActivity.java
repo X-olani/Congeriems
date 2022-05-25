@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         showItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, ShowItems.class);
+                Intent i = new Intent(MainActivity.this, addItem.class);
                 startActivity(i);
             }
         });

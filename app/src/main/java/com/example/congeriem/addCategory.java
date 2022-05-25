@@ -10,9 +10,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class addCategory extends AppCompatActivity {
-    public ArrayList<Categories> arrayCategor =new ArrayList<Categories>();
+    GlobalVariables globalVariables=(GlobalVariables) this.getApplication();
+List<Categories>categoriesList;
     Button btnAddCategory ;
     TextView txtCategory,txtGoal ;
 
@@ -24,22 +26,21 @@ public class addCategory extends AppCompatActivity {
         btnAddCategory = (Button) findViewById(R.id.btnAdd);
         txtCategory =(TextView) findViewById(R.id.txtCategory);
         txtGoal=(TextView) findViewById(R.id.txtGoal);
+        categoriesList=globalVariables.getCategoryList();
+
 // button add to category class
         btnAddCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+int createdID=generateID(categoriesList);
 
                 //passing variable to show category view
                 String name=txtCategory.getText().toString();
                 int goal= Integer.parseInt( txtGoal.getText().toString());
-
+                Categories c= new Categories(createdID,name,goal);
+                categoriesList.add(c);
                 Intent op = new Intent(addCategory.this,ShowCategories.class);
 
-                //setting edit value to -1 because item is not being edited
-                op.putExtra("edit",-1);
-                op.putExtra("Category",name);
-                op.putExtra("GOAL",goal);
                 if (isTextFulled(name,goal)== true){
 
                     startActivity(op);
@@ -51,7 +52,7 @@ public class addCategory extends AppCompatActivity {
 
     }
     public Boolean isTextFulled(String category, int goal ){
-        Boolean login=false;
+        Boolean status=false;
 String g = Integer.toString(goal);
 
         if (category.trim().equals("") & g.equals("0")){
@@ -59,8 +60,32 @@ String g = Integer.toString(goal);
             Toast.makeText(addCategory.this,"Input Fields Empty",Toast.LENGTH_LONG).show();
 
         }else {
-            login = true;
+            status = true;
         }
-        return login;
+        return status;
     }
+    // generate ID
+    public int generateID (List< Categories > categoriesList) {
+        int max = 0;
+        int createId = 0;
+        //if the array list is empty make the id 1
+        if (categoriesList.size() == 0) {
+
+
+            createId = 0;
+        } else {
+            for (int x = 0; x < categoriesList.size(); x++) {
+
+                if (categoriesList.get(x).getID() > categoriesList.get(max).getID()) {
+                    max = x;
+                }
+
+
+            }
+            createId = categoriesList.get(max).getID();
+            createId = createId + 1;
+        }
+        return createId;
+    }
+
 }

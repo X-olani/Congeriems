@@ -5,6 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".addItem">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -19,6 +24,7 @@
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="28sp" />
+
         <TextView
             android:id="@+id/txtLabel"
             android:layout_width="match_parent"
@@ -36,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/idTVHeader"
-            android:layout_marginTop="99dp"
+            android:layout_marginTop="20dp"
             android:padding="5dp"
             android:text=""
             android:textAlignment="center"
@@ -75,6 +81,7 @@
             android:layout_marginEnd="10dp"
             android:hint="Price"
             android:inputType="number" />
+
         <TextView
             android:id="@+id/txtLabel3"
             android:layout_width="match_parent"
@@ -123,6 +130,27 @@
             android:text="DONE"
             android:textAllCaps="false" />
 
-    </RelativeLayout>
+        <TextView
+            android:id="@+id/txtSelectCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtDate"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:inputType="number"
+            android:text="Select Category"
+            android:textColor="@color/black" />
 
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtSelectCategory"
+            android:layout_marginTop="20dp"
+
+        />
+
+    </RelativeLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
