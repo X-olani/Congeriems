@@ -22,7 +22,7 @@ List<Categories>categoriesList;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_category);
-
+//just a commit
         btnAddCategory = (Button) findViewById(R.id.btnAdd);
         txtCategory =(TextView) findViewById(R.id.txtCategory);
         txtGoal=(TextView) findViewById(R.id.txtGoal);
