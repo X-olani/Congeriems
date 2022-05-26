@@ -48,12 +48,12 @@
       android:textSize="30dp" />
 
   <EditText
-      android:id="@+id/Last_name"
+      android:id="@+id/Last_Name"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_below="@id/Fist_Name"
       android:layout_marginStart="10dp"
-      android:layout_marginTop="2dp"
+      android:layout_marginTop="11dp"
       android:layout_marginEnd="10dp"
       android:layout_marginBottom="10dp"
       android:backgroundTintMode="add"
@@ -65,27 +65,27 @@
       android:textSize="30dp" />
 
   <EditText
-      android:id="@+id/Email"
+      android:id="@+id/Signup_Email"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_below="@id/Last_name"
+      android:layout_below="@id/Last_Name"
       android:layout_marginStart="10dp"
       android:layout_marginTop="2dp"
       android:layout_marginEnd="10dp"
       android:layout_marginBottom="10dp"
       android:backgroundTintMode="add"
       android:drawablePadding="10dp"
-      android:hint="Last Name"
+      android:hint="Email"
       android:inputType=""
       android:padding="20dp"
       android:textColorHint="@color/black"
       android:textSize="30dp" />
 
   <EditText
-      android:id="@+id/password"
+      android:id="@+id/SignUp_Password"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_below="@id/Last_name"
+      android:layout_below="@id/Last_Name"
       android:layout_marginStart="10dp"
       android:layout_marginTop="104dp"
       android:layout_marginEnd="10dp"
@@ -98,11 +98,13 @@
       android:textColorHint="@color/black"
       android:textSize="30dp" />
 
-  <com.google.android.material.button.MaterialButton
+
+  <Button
+
       android:id="@+id/CREATE_ACCOUNT"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_below="@id/password"
+      android:layout_below="@id/SignUp_Password"
       android:layout_centerHorizontal="true"
       android:layout_marginStart="20dp"
       android:layout_marginTop="10dp"

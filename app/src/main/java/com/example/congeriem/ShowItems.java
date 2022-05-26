@@ -23,9 +23,8 @@ public class ShowItems extends AppCompatActivity {
     RecyclerView rvDisplay;
     ItemAdapter adapter;
 
-
-    ListOfItems listTheItem;
-    private  RecyclerView.LayoutManager layoutManager;
+    //ListOfItems listTheItem;
+    private RecyclerView.LayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
