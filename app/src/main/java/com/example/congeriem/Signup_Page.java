@@ -88,10 +88,10 @@ public class Signup_Page extends AppCompatActivity {
                         }
 
                     }
-                    }
+
             }};
 
-
+        }
     }};
 
 
