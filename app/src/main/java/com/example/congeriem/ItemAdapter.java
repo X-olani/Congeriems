@@ -2,6 +2,7 @@ package com.example.congeriem;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,20 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.MyViewHolder> 
             @Override
             public void onClick(View view) {
 
+            }
+        });
+
+        holder.parentLayout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Intent i= new Intent(context,editItems.class);
+
+                i.putExtra("itemID",itemsList.get(position).getID());
+                i.putExtra("item",itemsList.get(position).getItems());
+                i.putExtra("price",itemsList.get(position).getPrice());
+                i.putExtra("date",itemsList.get(position).getDate());
+                context.startActivity(i);
+                return false;
             }
         });
 

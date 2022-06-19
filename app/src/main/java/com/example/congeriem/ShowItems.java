@@ -23,8 +23,9 @@ public class ShowItems extends AppCompatActivity {
     RecyclerView rvDisplay;
     ItemAdapter adapter;
 
+    DataBaseHelper dataBaseHelper = new DataBaseHelper( ShowItems.this);
 
-    ListOfItems listTheItem;
+
     private  RecyclerView.LayoutManager layoutManager;
 
     @Override
@@ -36,7 +37,7 @@ public class ShowItems extends AppCompatActivity {
 
         // displaying item on list
         rvDisplay=findViewById(R.id.ListView2);
-        itemsList= globalVariables.getItemList();
+        itemsList= dataBaseHelper.getAllItems();
 
         rvDisplay.setHasFixedSize(true);
 
@@ -44,8 +45,11 @@ public class ShowItems extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         rvDisplay.setLayoutManager(layoutManager);
 
+     dataBaseHelper = new DataBaseHelper( ShowItems.this);
+        List<Items> allItems = dataBaseHelper.getAllItems();
 
-        adapter=new ItemAdapter(itemsList,this);
+
+        adapter=new ItemAdapter(allItems,this);
         rvDisplay.setAdapter(adapter);
         Bundle newData = getIntent().getExtras();
 

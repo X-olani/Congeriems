@@ -7,17 +7,22 @@ public class Items {
     private int Price;
     private String CategoryID;
     private String  Date;
+    private String Url;
 
-    public Items(int id,String items, int price,String categoryID, String date) {
+    public Items(int id,String items, int price,String categoryID, String date, String url) {
 
         Items = items;
         Price= price;
         CategoryID = categoryID;
         Date=date;
         ID=id;
+        Url=url;
 
     }
 
+    public String getUrl() {
+        return Url;
+    }
 
     public int getID() {
         return ID;

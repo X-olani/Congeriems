@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
         viewCategory=(CardView) findViewById(R.id.cardView);
         createCategory=(CardView) findViewById(R.id.cardView2);
         showItem=(CardView) findViewById(R.id.cardView3);
+
         viewCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

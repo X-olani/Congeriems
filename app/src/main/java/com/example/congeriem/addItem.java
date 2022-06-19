@@ -27,6 +27,8 @@ public class addItem extends AppCompatActivity {
     List <Categories> categoriesList;
     Spinner spinner;
 
+    DataBaseHelper dataBaseHelper = new DataBaseHelper(addItem.this);
+
     TextView edtItem,edtPrice, txtDate, txtMessage;
     Button btnCancel,btnDone;
     String dataSaved, selectedCategory;
@@ -48,12 +50,12 @@ public class addItem extends AppCompatActivity {
         btnCancel =(Button) findViewById(R.id.btnCancel);
         txtMessage=(TextView )findViewById(R.id.txtLabel4);
         itemsList= globalVariables.getItemList();
-        categoriesList=globalVariables.getCategoryList();
+        categoriesList=dataBaseHelper.getAllCategories();
         spinner=findViewById(R.id.spinner);
 
 
 // dropdown of category
-        ArrayAdapter<Categories> spinnerAdapter = new ArrayAdapter<Categories>(this, android.R.layout.simple_spinner_item,categoriesList);
+        ArrayAdapter<Categories> spinnerAdapter = new ArrayAdapter<Categories>(this, android.R.layout.simple_spinner_item,dataBaseHelper.getAllCategories());
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerAdapter);
 
@@ -105,11 +107,14 @@ public class addItem extends AppCompatActivity {
                 Intent i= new Intent( addItem.this,ShowItems.class);
                 i.putExtra("category",selectedCategory);
 
-                Items c= new Items(generateID(itemsList),item,price,selectedCategory,date);
+
 
 /// if goal not reached add item
-                if(checkIfGoalIsComplete( itemsList)){
-                    itemsList.add(c);
+                if(checkIfGoalIsComplete( dataBaseHelper.getAllItems())){
+                    Items c= new Items(-1,item,price,selectedCategory,date,"https://assets.vogue.com/photos/61602c7c30a1330360069511/master/w_1280%2Cc_limit/slide_2.jpg");
+                   dataBaseHelper = new DataBaseHelper(addItem.this);
+                    dataBaseHelper.addOneItem(c);
+
                     startActivity(i);
                 }
 

@@ -42,7 +42,11 @@ public class ShowCategories extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         rvDisplay.setLayoutManager(layoutManager);
 
-        adapter = new CategoryAdapter(arrayCategory, this);
+        DataBaseHelper dataBaseHelper = new DataBaseHelper( ShowCategories.this);
+        List<Categories> allCategories = dataBaseHelper.getAllCategories();
+
+
+        adapter = new CategoryAdapter(allCategories, this);
         rvDisplay.setAdapter(adapter);
 
 

@@ -22,7 +22,7 @@ List<Categories>categoriesList;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_category);
-//just a commit
+
         btnAddCategory = (Button) findViewById(R.id.btnAdd);
         txtCategory =(TextView) findViewById(R.id.txtCategory);
         txtGoal=(TextView) findViewById(R.id.txtGoal);
@@ -37,12 +37,15 @@ int createdID=generateID(categoriesList);
                 //passing variable to show category view
                 String name=txtCategory.getText().toString();
                 int goal= Integer.parseInt( txtGoal.getText().toString());
-                Categories c= new Categories(createdID,name,goal);
-                categoriesList.add(c);
+
+               // categoriesList.add(c);
                 Intent op = new Intent(addCategory.this,ShowCategories.class);
 
                 if (isTextFulled(name,goal)== true){
-
+                    Categories c= new Categories(createdID,name,goal);
+DataBaseHelper dataBaseHelper = new DataBaseHelper(addCategory.this);
+   boolean success =dataBaseHelper.addOneCategory(c);
+                    Toast.makeText(addCategory.this,"successful" +success,Toast.LENGTH_LONG).show();
                     startActivity(op);
                 }
 
