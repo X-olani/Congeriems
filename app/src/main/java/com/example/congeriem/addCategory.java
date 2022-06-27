@@ -1,5 +1,6 @@
 package com.example.congeriem;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -9,6 +10,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +23,7 @@ public class addCategory extends AppCompatActivity {
 List<Categories>categoriesList;
     Button btnAddCategory ;
     TextView txtCategory,txtGoal ;
-
+     DatabaseReference db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,12 +33,13 @@ List<Categories>categoriesList;
         txtCategory =(TextView) findViewById(R.id.txtCategory);
         txtGoal=(TextView) findViewById(R.id.txtGoal);
         categoriesList=globalVariables.getCategoryList();
+        db= FirebaseDatabase.getInstance().getReference();
 
 // button add to category class
         btnAddCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-int createdID=generateID(categoriesList);
+
 
                 //passing variable to show category view
                 String name=txtCategory.getText().toString();
@@ -42,11 +49,11 @@ int createdID=generateID(categoriesList);
                 Intent op = new Intent(addCategory.this,ShowCategories.class);
 
                 if (isTextFulled(name,goal)== true){
-                    Categories c= new Categories(createdID,name,goal);
-DataBaseHelper dataBaseHelper = new DataBaseHelper(addCategory.this);
-   boolean success =dataBaseHelper.addOneCategory(c);
-                    Toast.makeText(addCategory.this,"successful" +success,Toast.LENGTH_LONG).show();
-                    startActivity(op);
+
+                    addCategory();
+
+
+                   // startActivity(op);
                 }
 
             };
@@ -54,6 +61,27 @@ DataBaseHelper dataBaseHelper = new DataBaseHelper(addCategory.this);
 
 
     }
+
+    private void addCategory() {
+        String name = txtCategory.getText().toString();
+        int goal = Integer.parseInt(txtGoal.getText().toString());
+
+        String id = db.push().getKey();
+        Categories c = new Categories(id, name, goal);
+        db.child("categories").child(id).setValue(c).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+
+                    Toast.makeText(addCategory.this, "Created", Toast.LENGTH_LONG).show();
+                }
+            }
+
+
+        });
+    }
+
+
     public Boolean isTextFulled(String category, int goal ){
         Boolean status=false;
 String g = Integer.toString(goal);
@@ -68,27 +96,6 @@ String g = Integer.toString(goal);
         return status;
     }
     // generate ID
-    public int generateID (List< Categories > categoriesList) {
-        int max = 0;
-        int createId = 0;
-        //if the array list is empty make the id 1
-        if (categoriesList.size() == 0) {
 
-
-            createId = 0;
-        } else {
-            for (int x = 0; x < categoriesList.size(); x++) {
-
-                if (categoriesList.get(x).getID() > categoriesList.get(max).getID()) {
-                    max = x;
-                }
-
-
-            }
-            createId = categoriesList.get(max).getID();
-            createId = createId + 1;
-        }
-        return createId;
-    }
 
 }

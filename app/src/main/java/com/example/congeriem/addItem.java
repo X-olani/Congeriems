@@ -1,5 +1,6 @@
 package com.example.congeriem;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,6 +19,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +35,7 @@ public class addItem extends AppCompatActivity {
     List<Items> itemsList;
     List <Categories> categoriesList;
     Spinner spinner;
-
+    DatabaseReference db;
     DataBaseHelper dataBaseHelper = new DataBaseHelper(addItem.this);
 
     TextView edtItem,edtPrice, txtDate, txtMessage;
@@ -52,10 +61,10 @@ public class addItem extends AppCompatActivity {
         itemsList= globalVariables.getItemList();
         categoriesList=dataBaseHelper.getAllCategories();
         spinner=findViewById(R.id.spinner);
-
+        db= FirebaseDatabase.getInstance().getReference();
 
 // dropdown of category
-        ArrayAdapter<Categories> spinnerAdapter = new ArrayAdapter<Categories>(this, android.R.layout.simple_spinner_item,dataBaseHelper.getAllCategories());
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,globalVariables.getDropDownList());
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerAdapter);
 
@@ -110,14 +119,17 @@ public class addItem extends AppCompatActivity {
 
 
 /// if goal not reached add item
-                if(checkIfGoalIsComplete( dataBaseHelper.getAllItems())){
-                    Items c= new Items(-1,item,price,selectedCategory,date,"https://assets.vogue.com/photos/61602c7c30a1330360069511/master/w_1280%2Cc_limit/slide_2.jpg");
-                   dataBaseHelper = new DataBaseHelper(addItem.this);
-                    dataBaseHelper.addOneItem(c);
 
-                    startActivity(i);
-                }
 
+                    addItem();
+
+
+
+
+if (checkIfGoalIsComplete()){
+    startActivity(i);
+
+};
 
 
             }
@@ -127,6 +139,8 @@ public class addItem extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i =new Intent(getApplicationContext(),ShowCategories.class);
+
+
                 startActivity(i);
             }
         });
@@ -134,14 +148,16 @@ public class addItem extends AppCompatActivity {
 
     }
     //check if the goal has been reached if so the user can not add to list
-    public Boolean checkIfGoalIsComplete(List<Items> arrayItem){
+    public Boolean checkIfGoalIsComplete(){
         boolean saveItem=true;
         limitItem=0;
         int count=0;
 
 
+
+
         // get the goal form th category class
-        for(Categories i:categoriesList){
+        for(Categories i: globalVariables.getCategoryList()){
 
             if(i.getCategory().contentEquals(selectedCategory)){
             limitItem=i.getGoal();
@@ -149,8 +165,9 @@ public class addItem extends AppCompatActivity {
             };
         }
 
-      // checking igf the goal haven reached
-        for(Items i:arrayItem){
+      // checking if the goal haven reached
+        for(Items i:globalVariables.getItemList()){
+
 
             if(i.getCategoryID().contentEquals(selectedCategory)){
                 count++;
@@ -167,27 +184,30 @@ public class addItem extends AppCompatActivity {
 
     };
 
-    // generating an id for the item
-    public int generateID (List< Items > arraylist) {
-        int max = 0;
-        int createId = 0;
-        //if the array list is empty make the id 1
-        if (arraylist.size() == 0) {
+    private void addItem() {
+        String item= edtItem.getText().toString();
+        int price =Integer.parseInt( edtPrice.getText().toString());
+        String date= txtDate.getText().toString();
+        selectedCategory=spinner.getSelectedItem().toString();
 
 
-            createId = 0;
-        } else {
-            for (int x = 0; x < arraylist.size(); x++) {
+        String id = db.push().getKey();
+        Items c = new Items(id,item,price,selectedCategory,date,"https://assets.vogue.com/photos/61602c7c30a1330360069511/master/w_1280%2Cc_limit/slide_2.jpg");
+        db.child("items").child(id).setValue(c).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
 
-                if (arraylist.get(x).getID() > arraylist.get(max).getID()) {
-                    max = x;
+                    Toast.makeText(addItem.this, "Created", Toast.LENGTH_LONG).show();
+
                 }
-
-
             }
-            createId = arraylist.get(max).getID();
-            createId = createId + 1;
-        }
-        return createId;
+
+
+        });
+
+
     }
+
+
 }

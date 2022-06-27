@@ -2,36 +2,44 @@ package com.example.congeriem;
 
 public class Categories {
 
-    private int ID;
+    private String ID;
         private String Category;
         private int Goal;
 
-        public Categories( int id, String category, int goal) {
+        public Categories(){
 
-            ID=id;
-            Category = category;
-            Goal=goal;
+        }
+        public Categories( String id, String category, int goal) {
+
+            this.ID=id;
+          this.  Category = category;
+           this.Goal=goal;
 
         }
 
+    public void setID(String ID) {
+        this.ID = ID;
+    }
 
+    public void setCategory(String category) {
+        Category = category;
+    }
 
+    public void setGoal(int goal) {
+        Goal = goal;
+    }
 
-        public String getCategory() {
+    public String getCategory() {
             return Category;
         }
 
         public  int getGoal(){return Goal;}
 
-    public int getID() {
+    public String getID() {
         return ID;
     }
 
-    @Override
-    public String toString() {
-        return Category ;
 
-    }
 }
 
 

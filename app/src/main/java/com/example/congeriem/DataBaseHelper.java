@@ -102,8 +102,8 @@ public List<Categories> getAllCategories(){
                 String category= cursor.getString(1);
                 int goal = cursor.getInt(2);
 
-Categories newCategory = new Categories(categoryID,category,goal);
-returnList.add(newCategory);
+//Categories newCategory = new Categories( categoryID,category,goal);
+//returnList.add(newCategory);
 
             } while (cursor.moveToNext());
         }
@@ -128,7 +128,7 @@ cursor.close();
 
         if (cursor.moveToFirst()){
             do{
-                int ItemID = cursor.getInt(0);
+                String ItemID = cursor.getString(0);
                 String item= cursor.getString(1);
                 int price = cursor.getInt(2);
                 String categoryID= cursor.getString(3);
