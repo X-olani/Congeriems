@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         showItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, addItem.class);
+                Intent i = new Intent(MainActivity.this, achievements.class);
                 startActivity(i);
             }
         });
