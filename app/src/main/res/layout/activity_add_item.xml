@@ -13,6 +13,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <TextView
             android:id="@+id/idTVHeader"
             android:layout_width="match_parent"
@@ -30,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/txtLabel4"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="30dp"
             android:padding="5dp"
             android:text="Item name"
             android:textAlignment="textStart"
@@ -104,14 +105,15 @@
             android:layout_marginEnd="10dp"
             android:hint="Select Date"
             android:inputType="number" />
+
         <Button
             android:id="@+id/btnCancel"
             android:layout_width="146dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/txtDate"
+            android:layout_below="@id/txtTakePicture"
             android:layout_alignParentStart="true"
             android:layout_marginStart="50dp"
-            android:layout_marginTop="109dp"
+            android:layout_marginTop="40dp"
             android:layout_marginEnd="46dp"
             android:layout_toStartOf="@+id/btnDone"
             android:text="CANCEL"
@@ -121,11 +123,11 @@
             android:id="@+id/btnDone"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/txtDate"
+            android:layout_below="@id/txtTakePicture"
 
             android:layout_alignParentEnd="true"
             android:layout_marginStart="28dp"
-            android:layout_marginTop="111dp"
+            android:layout_marginTop="40dp"
             android:layout_marginEnd="50dp"
             android:text="DONE"
             android:textAllCaps="false" />
@@ -149,8 +151,44 @@
             android:layout_below="@id/txtSelectCategory"
             android:layout_marginTop="20dp"
 
-        />
+            />
+
+        <TextView
+            android:id="@+id/txtTakePicture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/spinner"
+            android:layout_marginTop="30dp"
+            android:text="Take Picture"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.21"
+            app:layout_constraintStart_toStartOf="parent"
+           >
+
+        </TextView>
+
+        <Button
+            android:id="@+id/btnTakePicture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/spinner"
+            android:layout_marginStart="46dp"
+            android:layout_marginTop="17dp"
+            android:layout_toEndOf="@+id/txtTakePicture"
+            android:text="Camara"
+             />
+
+        <ImageView
+            android:id="@+id/imgCap"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_below="@id/btnCancel">
+
+        </ImageView>
+
 
     </RelativeLayout>
+
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

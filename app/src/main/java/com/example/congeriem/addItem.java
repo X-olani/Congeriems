@@ -1,20 +1,32 @@
 package com.example.congeriem;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,11 +51,18 @@ public class addItem extends AppCompatActivity {
     DataBaseHelper dataBaseHelper = new DataBaseHelper(addItem.this);
 
     TextView edtItem,edtPrice, txtDate, txtMessage;
-    Button btnCancel,btnDone;
+    Button btnCancel,btnDone,btnTakePicture;
     String dataSaved, selectedCategory;
+    ImageView img;
     int categoryID;
     int limitItem;
     private DatePickerDialog.OnDateSetListener onDateSetListener;
+// variables to store the constants of the camara returns
+
+    ActivityResultLauncher< Intent> activityResultLauncher;
+  int  CAMERA_PERMISSION_CODE=1;
+  int CAMARA=2;
+
 
 
     @Override
@@ -57,10 +76,12 @@ public class addItem extends AppCompatActivity {
         txtDate= (TextView) findViewById(R.id.txtDate);
         btnDone=(Button) findViewById(R.id.btnDone);
         btnCancel =(Button) findViewById(R.id.btnCancel);
+        btnTakePicture=findViewById(R.id.btnTakePicture);
         txtMessage=(TextView )findViewById(R.id.txtLabel4);
         itemsList= globalVariables.getItemList();
         categoriesList=dataBaseHelper.getAllCategories();
         spinner=findViewById(R.id.spinner);
+        img =findViewById(R.id.imgCap);
         db= FirebaseDatabase.getInstance().getReference();
 
 // dropdown of category
@@ -116,22 +137,14 @@ public class addItem extends AppCompatActivity {
                 Intent i= new Intent( addItem.this,ShowItems.class);
                 i.putExtra("category",selectedCategory);
 
-
-
 /// if goal not reached add item
 
-
                     addItem();
-
-
-
 
 if (checkIfGoalIsComplete()){
     startActivity(i);
 
 };
-
-
             }
         });
 
@@ -145,8 +158,38 @@ if (checkIfGoalIsComplete()){
             }
         });
 
+        // getting thee image back from the camera
+        activityResultLauncher= registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if(result.getResultCode()==RESULT_OK && result.getData()!=null){
+                    Bitmap bitmap= (Bitmap) result.getData().getExtras().get("data");
+                    img.setImageBitmap(bitmap);
+                }
+            }
+        });
+
+        // button to lunch the camera
+btnTakePicture.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+
+        //opening the intent for the camera
+Intent camaraIntent= new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+if(camaraIntent.resolveActivity(getPackageManager())!=null){
+
+    activityResultLauncher.launch(camaraIntent);
+}
+else{
+    Toast.makeText(addItem.this,"Wont able to get camera working",Toast.LENGTH_LONG).show();
+}
 
     }
+
+});
+
+    }
+
     //check if the goal has been reached if so the user can not add to list
     public Boolean checkIfGoalIsComplete(){
         boolean saveItem=true;

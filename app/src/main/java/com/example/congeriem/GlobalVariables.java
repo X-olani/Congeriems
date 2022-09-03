@@ -1,6 +1,16 @@
 package com.example.congeriem;
 
 import android.app.Application;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,5 +46,63 @@ public class GlobalVariables  extends Application {
 
     public static void setItemList(List<Items> itemList) {
         GlobalVariables.itemList = itemList;
+    }
+
+
+    // getting the data from firebase
+    public  static void GetDataFireBaseCategory(){
+        DatabaseReference db;
+        categoryList= new ArrayList<>();
+        dropDownList= new ArrayList<>();
+        db= FirebaseDatabase.getInstance().getReference("categories");
+
+
+        db.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot data:snapshot.getChildren()){
+                    Categories c= data.getValue(Categories.class);
+                    categoryList.add(c);
+                }
+
+
+                for( Categories i :categoryList){
+                    dropDownList.add(i.getCategory());
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+    }
+    public static void GetDataFireBaseItems(){
+        DatabaseReference db;
+        itemList= new ArrayList<>();
+        db= FirebaseDatabase.getInstance().getReference("items");
+        List<Items> itemsList= new ArrayList<>();
+
+
+        db.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot data:snapshot.getChildren()){
+                    Items item= data.getValue(Items.class);
+                    itemList.add(item);
+                    Log.i("Items","LOOk"+itemsList);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

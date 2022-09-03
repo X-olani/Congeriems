@@ -35,7 +35,7 @@ public class ShowCategories extends AppCompatActivity {
     RecyclerView rvDisplay;
     String key=null;
 
-     DatabaseReference db;
+   //  DatabaseReference db;
 
     private  RecyclerView.LayoutManager layoutManager;
 
@@ -57,7 +57,7 @@ public class ShowCategories extends AppCompatActivity {
 
         DataBaseHelper dataBaseHelper = new DataBaseHelper( ShowCategories.this);
         List<Categories> allCategories = dataBaseHelper.getAllCategories();
-        ShowCategories();
+     ShowCategories();
 
       //  rvDisplay.setAdapter(adapter);
 
@@ -77,9 +77,10 @@ public class ShowCategories extends AppCompatActivity {
 
     }
 
-public void ShowCategories(){
 
-    db= FirebaseDatabase.getInstance().getReference("categories");
+public void ShowCategories(){
+   // globalVariables.GetDataFireBaseCategory();
+  /*  db= FirebaseDatabase.getInstance().getReference("categories");
     List <Categories> CategoryList= new ArrayList<>();
     List <String> dropdownList = new ArrayList<>();
 
@@ -105,7 +106,10 @@ public void ShowCategories(){
         public void onCancelled(@NonNull DatabaseError error) {
 
         }
-    });
+    });*/
+    adapter=new CategoryAdapter(  globalVariables.getCategoryList(),ShowCategories.this);
+    rvDisplay.setAdapter(adapter);
 }
+
 
 }

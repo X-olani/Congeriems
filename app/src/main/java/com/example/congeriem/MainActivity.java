@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    CardView createCategory, viewCategory ,showItem;
+    CardView createCategory, viewCategory ,showItem,achievements;
     GlobalVariables globalVariables=(GlobalVariables) this.getApplication();
     public ArrayList newArray ;
     DatabaseReference db;
@@ -30,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
         viewCategory=(CardView) findViewById(R.id.cardView);
         createCategory=(CardView) findViewById(R.id.cardView2);
         showItem=(CardView) findViewById(R.id.cardView3);
+        achievements=(CardView) findViewById(R.id.cardView4);
+
+
 
         viewCategory.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,14 +51,24 @@ public class MainActivity extends AppCompatActivity {
         showItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this, addItem.class);
+                startActivity(i);
+            }
+        });
+
+        achievements.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 Intent i = new Intent(MainActivity.this, achievements.class);
                 startActivity(i);
             }
         });
-        getAllItems();
+        globalVariables.GetDataFireBaseCategory();
+        globalVariables.GetDataFireBaseItems();
+
 
     }
-    private void getAllItems(){
+ /*   private void getAllItems(){
 
 
         db= FirebaseDatabase.getInstance().getReference("items");
@@ -79,5 +92,5 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-    }
+    }*/
 }
