@@ -13,12 +13,14 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.icu.util.Calendar;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -32,13 +34,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,18 +57,23 @@ public class addItem extends AppCompatActivity {
     List <Categories> categoriesList;
     Spinner spinner;
     DatabaseReference db;
+    StorageReference dbStorage;
     DataBaseHelper dataBaseHelper = new DataBaseHelper(addItem.this);
 
     TextView edtItem,edtPrice, txtDate, txtMessage;
     Button btnCancel,btnDone,btnTakePicture;
     String dataSaved, selectedCategory;
+    String geturl;
+
+    Uri img_uri;
+
     ImageView img;
     int categoryID;
     int limitItem;
     private DatePickerDialog.OnDateSetListener onDateSetListener;
 // variables to store the constants of the camara returns
 
-    ActivityResultLauncher< Intent> activityResultLauncher;
+    ActivityResultLauncher< String> activityResultLauncher;
   int  CAMERA_PERMISSION_CODE=1;
   int CAMARA=2;
 
@@ -83,6 +97,7 @@ public class addItem extends AppCompatActivity {
         spinner=findViewById(R.id.spinner);
         img =findViewById(R.id.imgCap);
         db= FirebaseDatabase.getInstance().getReference();
+        dbStorage= FirebaseStorage.getInstance().getReference();
 
 // dropdown of category
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,globalVariables.getDropDownList());
@@ -121,7 +136,7 @@ public class addItem extends AppCompatActivity {
             }
         };
 
-// passing data to the show item view
+        // passing data to the show item view
 
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,7 +152,7 @@ public class addItem extends AppCompatActivity {
                 Intent i= new Intent( addItem.this,ShowItems.class);
                 i.putExtra("category",selectedCategory);
 
-/// if goal not reached add item
+                /// if goal not reached add item
 
                     addItem();
 
@@ -159,14 +174,16 @@ if (checkIfGoalIsComplete()){
         });
 
         // getting thee image back from the camera
-        activityResultLauncher= registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        activityResultLauncher= registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
             @Override
-            public void onActivityResult(ActivityResult result) {
-                if(result.getResultCode()==RESULT_OK && result.getData()!=null){
-                    Bitmap bitmap= (Bitmap) result.getData().getExtras().get("data");
-                    img.setImageBitmap(bitmap);
+            public void onActivityResult(Uri result) {
+                if(result!=null){
+
+img_uri=result;
+                    img.setImageURI(result);
                 }
             }
+
         });
 
         // button to lunch the camera
@@ -175,6 +192,9 @@ btnTakePicture.setOnClickListener(new View.OnClickListener() {
     public void onClick(View view) {
 
         //opening the intent for the camera
+
+/*        ContentValues values = new ContentValues();
+
 Intent camaraIntent= new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 if(camaraIntent.resolveActivity(getPackageManager())!=null){
 
@@ -184,6 +204,13 @@ else{
     Toast.makeText(addItem.this,"Wont able to get camera working",Toast.LENGTH_LONG).show();
 }
 
+*/
+
+
+        Intent intent= new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+     activityResultLauncher.launch("image/*");
     }
 
 });
@@ -233,9 +260,13 @@ else{
         String date= txtDate.getText().toString();
         selectedCategory=spinner.getSelectedItem().toString();
 
+        // upload image
+      /*  StorageReference fileReff= dbStorage.child(String.valueOf(System.currentTimeMillis()));
+        fileReff.putFile()*/
 
+       ImageURL(img_uri);
         String id = db.push().getKey();
-        Items c = new Items(id,item,price,selectedCategory,date,"https://assets.vogue.com/photos/61602c7c30a1330360069511/master/w_1280%2Cc_limit/slide_2.jpg");
+        Items c = new Items(id,item,price,selectedCategory,date,geturl);
         db.child("items").child(id).setValue(c).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -247,6 +278,26 @@ else{
             }
 
 
+        });
+
+
+    }
+    public void ImageURL(Uri bb){
+
+
+        dbStorage.child("uploads").child(String.valueOf(System.currentTimeMillis())).putFile(bb).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                geturl=    taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
+                Toast.makeText(addItem.this, "Image was Uploaded",Toast.LENGTH_LONG).show();
+            }
+
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(addItem.this, "Image was not Uploaded",Toast.LENGTH_LONG).show();
+
+            }
         });
 
 

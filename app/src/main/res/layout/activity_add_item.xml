@@ -10,185 +10,186 @@
         android:layout_height="match_parent">
 
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/idTVHeader"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:gravity="center_horizontal"
-            android:padding="5dp"
-            android:text="Add Item"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="28sp" />
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/txtLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/txtLabel4"
-            android:layout_marginTop="30dp"
-            android:padding="5dp"
-            android:text="Item name"
-            android:textAlignment="textStart"
-            android:textColor="@color/black"
-            android:textSize="14sp" />
+            <TextView
+                android:id="@+id/idTVHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:gravity="center_horizontal"
+                android:padding="5dp"
+                android:text="Add Item"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="28sp" />
 
-        <TextView
-            android:id="@+id/txtLabel4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/idTVHeader"
-            android:layout_marginTop="20dp"
-            android:padding="5dp"
-            android:text=""
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/txtLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtLabel4"
+                android:layout_marginTop="30dp"
+                android:padding="5dp"
+                android:text="Item name"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
 
-        <EditText
-            android:id="@+id/edtItem"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/txtLabel"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:hint="Item"
-            android:inputType="textEmailAddress" />
-        <TextView
-            android:id="@+id/txtLabel2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/edtItem"
-            android:layout_marginTop="20dp"
-            android:padding="5dp"
-            android:text="Price"
-            android:textAlignment="textStart"
-            android:textColor="@color/black"
-            android:textSize="14sp" />
+            <TextView
+                android:id="@+id/txtLabel4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/idTVHeader"
+                android:layout_marginTop="20dp"
+                android:padding="5dp"
+                android:text=""
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
 
-        <EditText
-            android:id="@+id/edtPrice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/txtLabel2"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:hint="Price"
-            android:inputType="number" />
+            <EditText
+                android:id="@+id/edtItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtLabel"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:hint="Item"
+                android:inputType="textEmailAddress" />
 
-        <TextView
-            android:id="@+id/txtLabel3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/edtPrice"
-            android:layout_marginTop="20dp"
-            android:padding="5dp"
-            android:text="Date Saved"
-            android:textAlignment="textStart"
-            android:textColor="@color/black"
-            android:textSize="14sp" />
+            <TextView
+                android:id="@+id/txtLabel2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/edtItem"
+                android:layout_marginTop="20dp"
+                android:padding="5dp"
+                android:text="Price"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/txtDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/txtLabel3"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:hint="Select Date"
-            android:inputType="number" />
+            <EditText
+                android:id="@+id/edtPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtLabel2"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:hint="Price"
+                android:inputType="number" />
 
-        <Button
-            android:id="@+id/btnCancel"
-            android:layout_width="146dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/txtTakePicture"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="46dp"
-            android:layout_toStartOf="@+id/btnDone"
-            android:text="CANCEL"
-            android:textAllCaps="false" />
+            <TextView
+                android:id="@+id/txtLabel3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/edtPrice"
+                android:layout_marginTop="20dp"
+                android:padding="5dp"
+                android:text="Date Saved"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
 
-        <Button
-            android:id="@+id/btnDone"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/txtTakePicture"
+            <TextView
+                android:id="@+id/txtDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtLabel3"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:hint="Select Date"
+                android:inputType="number" />
 
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="50dp"
-            android:text="DONE"
-            android:textAllCaps="false" />
+            <Button
+                android:id="@+id/btnCancel"
+                android:layout_width="146dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imgCap"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginEnd="46dp"
+                android:layout_toStartOf="@+id/btnDone"
+                android:text="CANCEL"
+                android:textAllCaps="false" />
 
-        <TextView
-            android:id="@+id/txtSelectCategory"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/txtDate"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="10dp"
-            android:inputType="number"
-            android:text="Select Category"
-            android:textColor="@color/black" />
+            <Button
+                android:id="@+id/btnDone"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imgCap"
 
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/txtSelectCategory"
-            android:layout_marginTop="20dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="28dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginEnd="50dp"
+                android:text="DONE"
+                android:textAllCaps="false" />
 
-            />
+            <TextView
+                android:id="@+id/txtSelectCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtDate"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:inputType="number"
+                android:text="Select Category"
+                android:textColor="@color/black" />
 
-        <TextView
-            android:id="@+id/txtTakePicture"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/spinner"
-            android:layout_marginTop="30dp"
-            android:text="Take Picture"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.21"
-            app:layout_constraintStart_toStartOf="parent"
-           >
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtSelectCategory"
+                android:layout_marginTop="20dp"
 
-        </TextView>
+                />
 
-        <Button
-            android:id="@+id/btnTakePicture"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/spinner"
-            android:layout_marginStart="46dp"
-            android:layout_marginTop="17dp"
-            android:layout_toEndOf="@+id/txtTakePicture"
-            android:text="Camara"
-             />
+            <TextView
+                android:id="@+id/txtTakePicture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/spinner"
+                android:layout_marginTop="30dp"
+                android:text="Take Picture"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.21"
+                app:layout_constraintStart_toStartOf="parent">
 
-        <ImageView
-            android:id="@+id/imgCap"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_below="@id/btnCancel">
+            </TextView>
 
-        </ImageView>
+            <Button
+                android:id="@+id/btnTakePicture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/spinner"
+                android:layout_marginStart="46dp"
+                android:layout_marginTop="17dp"
+                android:layout_toEndOf="@+id/txtTakePicture"
+                android:text="Camara" />
+
+            <ImageView
+                android:id="@+id/imgCap"
+                android:layout_width="284dp"
+                android:layout_height="133dp"
+                android:layout_below="@id/txtTakePicture"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="40dp">
+
+            </ImageView>
 
 
-    </RelativeLayout>
+        </RelativeLayout>
 
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
