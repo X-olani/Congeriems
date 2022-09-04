@@ -54,11 +54,8 @@ public class ShowItems extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         rvDisplay.setLayoutManager(layoutManager);
 
-     dataBaseHelper = new DataBaseHelper( ShowItems.this);
-        List<Items> allItems = dataBaseHelper.getAllItems();
 
-
-        adapter=new ItemAdapter(allItems,this);
+        adapter=new ItemAdapter(itemsList,this);
         rvDisplay.setAdapter(adapter);
         Bundle newData = getIntent().getExtras();
 
@@ -83,10 +80,10 @@ public class ShowItems extends AppCompatActivity {
         });
 
     }
+    //filtering items
     public void theFilter (String filterBy){
 
         List<Items> filterList = new ArrayList<Items>();
-
 
 
                 for (Items sub:itemsList){

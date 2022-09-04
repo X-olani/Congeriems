@@ -24,6 +24,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -63,12 +64,12 @@ public class addItem extends AppCompatActivity {
     TextView edtItem,edtPrice, txtDate, txtMessage;
     Button btnCancel,btnDone,btnTakePicture;
     String dataSaved, selectedCategory;
-    String geturl;
+
 
     Uri img_uri;
 
     ImageView img;
-    int categoryID;
+ ;
     int limitItem;
     private DatePickerDialog.OnDateSetListener onDateSetListener;
 // variables to store the constants of the camara returns
@@ -97,7 +98,7 @@ public class addItem extends AppCompatActivity {
         spinner=findViewById(R.id.spinner);
         img =findViewById(R.id.imgCap);
         db= FirebaseDatabase.getInstance().getReference();
-        dbStorage= FirebaseStorage.getInstance().getReference();
+        dbStorage= FirebaseStorage.getInstance().getReference("uploads/"+String.valueOf(System.currentTimeMillis())+".jpg");
 
 // dropdown of category
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,globalVariables.getDropDownList());
@@ -154,7 +155,7 @@ public class addItem extends AppCompatActivity {
 
                 /// if goal not reached add item
 
-                    addItem();
+                ImageURL( img_uri);
 
 if (checkIfGoalIsComplete()){
     startActivity(i);
@@ -178,7 +179,6 @@ if (checkIfGoalIsComplete()){
             @Override
             public void onActivityResult(Uri result) {
                 if(result!=null){
-
 img_uri=result;
                     img.setImageURI(result);
                 }
@@ -254,7 +254,7 @@ else{
 
     };
 
-    private void addItem() {
+    private void addItem(String geturl) {
         String item= edtItem.getText().toString();
         int price =Integer.parseInt( edtPrice.getText().toString());
         String date= txtDate.getText().toString();
@@ -264,9 +264,11 @@ else{
       /*  StorageReference fileReff= dbStorage.child(String.valueOf(System.currentTimeMillis()));
         fileReff.putFile()*/
 
-       ImageURL(img_uri);
+
         String id = db.push().getKey();
-        Items c = new Items(id,item,price,selectedCategory,date,geturl);
+        Log.i("URL","SHOW URL "+ geturl.toString());
+        Items c = new Items(id,item,price,selectedCategory,date,geturl.toString());
+
         db.child("items").child(id).setValue(c).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -285,21 +287,36 @@ else{
     public void ImageURL(Uri bb){
 
 
-        dbStorage.child("uploads").child(String.valueOf(System.currentTimeMillis())).putFile(bb).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        dbStorage.putFile(bb).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                geturl=    taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
+                dbStorage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+
+                        addItem(uri.toString());
+                    }
+                });
+
+
+
+
                 Toast.makeText(addItem.this, "Image was Uploaded",Toast.LENGTH_LONG).show();
             }
 
-        }).addOnFailureListener(new OnFailureListener() {
+        }).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+
+            }
+        })
+.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(addItem.this, "Image was not Uploaded",Toast.LENGTH_LONG).show();
 
             }
         });
-
 
     }
 
